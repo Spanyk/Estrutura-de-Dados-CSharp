@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exer_10
 {
-    internal class Program
+    internal class Exer_10
     {
         const int MAX = 20;
 
