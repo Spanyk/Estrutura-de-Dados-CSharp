@@ -1,6 +1,6 @@
 # Exercicios passados em sala da disciplina de estrutura de dados. 
 
  - Recursividade
- - Lista/Lista Linear sequencial
+ - Lista Linear e Encadeada
  - Pilha
  - Tree
