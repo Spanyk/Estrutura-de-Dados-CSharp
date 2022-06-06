@@ -4,3 +4,4 @@
  - Lista Linear e Encadeada
  - Pilha
  - Tree
+ - Hash (encadeamento)
