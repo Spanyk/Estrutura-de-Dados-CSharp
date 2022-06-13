@@ -400,6 +400,7 @@ namespace Exer_29
                 }
                 else if( op == 5)
                     Console.Clear();
+                
             }   
         }
     }
