@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Exer_28
+namespace Exer_29
 {
     internal class Program
     {
