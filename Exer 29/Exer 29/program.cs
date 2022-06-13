@@ -12,15 +12,16 @@ namespace Exer_28
         {
             public int idade;
             public string nome, sexo;
+            public Tp_no prox;
         }
 
-        static int Hash(int c) // C -> Chave
+        static int hash(int c) // C -> Chave
         {
             return (c % N);
         }
         static void Insere(Tp_no[] v, int age, string nm, string sex)
         {
-            int pos = Hash(age);
+            int pos = hash(age);
 
             v[pos].idade = age;
             v[pos].nome = nm;
@@ -28,37 +29,48 @@ namespace Exer_28
         }
         static int Busca(int c)
         {
-            int pos = Hash(c);
+            int pos = hash(c);
             return pos;
         }
-
-
-        static void criaNos(Tp_no[] V) // V -> vetor
+        static void criaNos(Tp_no[] V)
         {
-            for (int i = 0; i < N; i++)
+            int i;
+            for (i = 0; i < N; i++)
             {
                 V[i] = new Tp_no();
             }
         }
-     
-        static void InserirLinear(Tp_no[] v, int age, string nm, string sex)
+        static void InserirLinear(Tp_no[] v, string nm, string sx, int age, ref int q)
         {
-            int pos = Hash(age);
+            int pos = hash(age);
             while (v[pos].idade != 0)
             {
                 pos++;
                 pos = pos % N;
+                q += q;
             }
             v[pos].idade = age;
             v[pos].nome = nm;
-            v[pos].sexo = sex;
+            v[pos].sexo = sx;
         }
-        static int RecuperarLinear(Tp_no[] v, int nt)
+        static void InsereEncadeado(Tp_no[] v, int c, string nm, string sx)
         {
-            int pos = Hash(nt);
+            Tp_no no = new Tp_no();
+            no.idade = c;
+            int pos = hash(c);
+            if (v[pos] != null)
+                no.prox = v[pos];
+            v[pos] = no;
+            v[pos].nome = nm;
+            v[pos].sexo = sx;
+        }
+
+        static int RecuperarLinear(Tp_no[] v, int age)
+        {
+            int pos = hash(age);
             int cont = 0;
 
-            while (v[pos].idade != nt && cont <= N)
+            while (v[pos].idade != age && cont <= N)
             {
                 pos++;
                 pos = pos % N;
@@ -74,10 +86,12 @@ namespace Exer_28
             }
         }
 
+
         static int funcionalidades() // main 2
         {
             int op = 0;
-
+            Console.Clear();
+ 
             Console.WriteLine("\nEscolha uma opção:");
             Console.Write(
                 "[1] Inserir\n" +
@@ -89,17 +103,15 @@ namespace Exer_28
                 );
 
             return op = Convert.ToInt32(Console.ReadLine());
+ 
         }
 
         static void Main(string[] args)
         {
-            Tp_no[] Vetor = new Tp_no[N];
-            criaNos(Vetor);
-            int op = 0, idade = 0;
-            string nome = "", sexo = "";
+            int op = 0;
 
             while (op != 4)
-            {
+            {   
                 Console.Clear();
                 Console.WriteLine("Escolha um opção");
                 Console.Write(
@@ -117,7 +129,7 @@ namespace Exer_28
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(">> Opção escolhida Sem tratamento <<");
                     Console.ResetColor();
-                    SemColisao(Vetor, nome, sexo, idade, op);
+                    SemColisao(op);
 
                 }
                 else if (op == 2)
@@ -126,7 +138,7 @@ namespace Exer_28
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(">> Opção escolhida Com tratamento <<");
                     Console.ResetColor();
-                    ColisaoLinear(Vetor, nome, sexo, idade, op);
+                    ColisaoLinear(op);
 
                 }
                 else if (op == 3)
@@ -135,121 +147,260 @@ namespace Exer_28
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(">> Opção escolhida Colisão linear encadeada <<");
                     Console.ResetColor();
-                    ColisaoLinearEncadeada(Vetor, nome, sexo, idade, op);
+                    ColisaoLinearEncadeada(op);
                 }
             }
 
         }
 
-        static void SemColisao(Tp_no[] V, string nm, string sx, int age, int op)
+        static void SemColisao(int op)
         {
-            Tp_no[] VetorSemTratamento = new Tp_no[N];
+            Tp_no[] SemColisao = new Tp_no[N];
+            criaNos(SemColisao);
+            int idade = 0;
+            string nome = "", sexo = "";
 
-            op = funcionalidades();
-
-            if (op == 1)
+            bool cc = true;
+            while(cc)
             {
-                Console.Clear();
-                Console.WriteLine("\n>> Prencha os campos: ");
-                Console.Write("Nome: ");
-                nm = Console.ReadLine();
-                Console.Write("Idade: ");
-                age = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Sexo: ");
-                sx = Console.ReadLine();
-                Insere(V, age, nm, sx);
-            }
-            else if (op == 2)
-            {
-                Tp_no pos = new Tp_no();
+                op = funcionalidades();
 
-                Console.Clear();
-                Console.Write(">> Digite a idade: ");
-                age = int.Parse(Console.ReadLine());
-                int chave = Busca(age);
-
-                Console.WriteLine(chave);
-                if (age % 5 == chave)
+                if (op == 1)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\n>> Nome encontrado <<\n");
-                    Console.ResetColor();
-                    Console.WriteLine($"Nome: {pos.nome} || Sexo: {pos.nome}");
-                    Console.WriteLine("\nDigite os novos dados ");
+                    Console.Clear();
+                    Console.WriteLine("\n>> Prencha os campos: ");
                     Console.Write("Nome: ");
-                    pos.nome = Console.ReadLine();
+                    nome = Console.ReadLine();
+                    Console.Write("Idade: ");
+                    idade = Convert.ToInt32(Console.ReadLine());
                     Console.Write("Sexo: ");
-                    pos.sexo = Console.ReadLine();
+                    sexo = Console.ReadLine();
+                    Insere(SemColisao, idade, nome, sexo);
                 }
-                else if (chave != V[chave].idade)
+                else if (op == 2)
                 {
+                    Console.Write(">> Digite a idade: ");
+                    idade = int.Parse(Console.ReadLine());
+                    int chave = Busca(idade);
+
+                    if (SemColisao[chave].idade == idade)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\n>> Nome encontrado <<\n");
+                        Console.ResetColor();
+                        Console.WriteLine($"Nome: {SemColisao[chave].nome} || Sexo: {SemColisao[chave].sexo}");
+                        Console.ReadKey();
+                    }
+
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n>> Nome não encontrado <<");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                    }
+
+                }
+                else if (op == 3)
+                {
+                    Console.Write(">> Digite a idade: ");
+                    idade = int.Parse(Console.ReadLine());
+                    int chave = Busca(idade);
+
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\n>> Nome não encontrado <<");
+                    Console.WriteLine(">> Digite os novos valores <<\n");
                     Console.ResetColor();
+                    Console.Write("Nome: ");
+                    SemColisao[chave].nome = Console.ReadLine();
+                    Console.Write("Sexo: ");
+                    SemColisao[chave].sexo = Console.ReadLine();
                 }
 
-            }
+                else if (op == 4)
+                {
+                    for (int chave = 0; chave < SemColisao.Length; chave++)
+                    {
+                        Console.WriteLine($"Nome:{SemColisao[chave].nome} " +
+                            " | " + $"Idade: {SemColisao[chave].idade} " +
+                            " | " + $"Sexo: {SemColisao[chave].sexo} ");
+                    }
+                    Console.ReadKey();
+                }
 
-
-
-            else if (op == 5)
-            {
-                Console.Clear();
+                else if (op == 5)
+                    cc = false;
             }
         }
-
-       
         
-        static void ColisaoLinear(Tp_no[] V, string nm, string sx, int age, int op)
+        static void ColisaoLinear(int op)
         {
-            Tp_no[] VetorComTratamento = new Tp_no[N];
+            Tp_no[] ColisaoLinear = new Tp_no[N];
+            int idade = 0, qtde = 0;
+            string nome = "", sexo = "";
+            criaNos(ColisaoLinear);
+            bool cc = true;
 
-            op = funcionalidades();
-            if (op == 5)
+            while (cc)
             {
-                Console.Clear();
-            }
-            while (op != 5)
-            {
+                op = funcionalidades();
+
                 if (op == 1)
                 {
-                    Console.WriteLine("\n>> Prencha os campos");
+                    Console.Clear();
+                    Console.WriteLine("\n>> Prencha os campos: ");
                     Console.Write("Nome: ");
-                    nm = Console.ReadLine();
+                    nome = Console.ReadLine();
                     Console.Write("Idade: ");
-                    age = Convert.ToInt32(Console.ReadLine());
+                    idade = Convert.ToInt32(Console.ReadLine());
                     Console.Write("Sexo: ");
-                    sx = Console.ReadLine();
-
-                    InserirLinear(V, age, nm, sx);
+                    sexo = Console.ReadLine();
+                    InserirLinear(ColisaoLinear, nome, sexo, idade, ref qtde);
                 }
+                else if (op == 2)
+                {
+                    Console.Write(">> Digite a idade: ");
+                    idade = int.Parse(Console.ReadLine());
+                    int pos = RecuperarLinear(ColisaoLinear, idade);
+
+                    if(pos != -1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\n>> Nome encontrado <<\n");
+                        Console.ResetColor();
+                        Console.WriteLine($"Nome: {ColisaoLinear[pos].nome} || Sexo: {ColisaoLinear[pos].sexo}");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n>> Nome não encontrado <<");
+                        Console.ResetColor();
+                    }
+                }
+                else if (op == 3)
+                {
+                    Console.Write(">> Digite a idade: ");
+                    idade = int.Parse(Console.ReadLine());
+                    int chave = Busca(idade);
+
+                    Console.WriteLine(">> Digite os novos valores <<\n");
+                    Console.Write("Nome: ");
+                    ColisaoLinear[chave].nome = Console.ReadLine();
+                    Console.Write("Sexo: ");
+                    ColisaoLinear[chave].sexo = Console.ReadLine();
+                    
+                }
+                else if (op == 4)
+                {
+                    Console.Clear();
+                    for (int chave = 0; chave < ColisaoLinear.Length; chave++)
+                    {
+                        Console.WriteLine($"Nome:{ColisaoLinear[chave].nome} " +
+                            " | " + $"Idade: {ColisaoLinear[chave].idade} " +
+                            " | " + $"Sexo: {ColisaoLinear[chave].sexo} ");
+                    }
+                    Console.ReadKey();
+
+                }
+
+                else if (op == 5)
+                    cc = false;
             }
         }
-
-        static void ColisaoLinearEncadeada(Tp_no[] V, string nm, string sx, int age, int op)
+    
+        static void ColisaoLinearEncadeada(int op)
         {
-            Tp_no[] VetorLinearEncadeada = new Tp_no[N];
-            op = funcionalidades();
-            if (op == 5)
+            Tp_no[] ColisaoEncadeada = new Tp_no[N];
+            int idade = 0;
+            string nome = "", sexo = "";
+            criaNos(ColisaoEncadeada);
+            bool cc = true;
+
+            while (cc)
             {
-                Console.Clear();
-            }
-            while (op != 5)
-            {
+                op = funcionalidades();
+
                 if (op == 1)
                 {
-                    Console.WriteLine("\n>> Prencha os campos");
+                    Console.Clear();
+                    Console.WriteLine("\n>> Prencha os campos: ");
                     Console.Write("Nome: ");
-                    nm = Console.ReadLine();
+                    nome = Console.ReadLine();
                     Console.Write("Idade: ");
-                    age = Convert.ToInt32(Console.ReadLine());
+                    idade = Convert.ToInt32(Console.ReadLine());
                     Console.Write("Sexo: ");
-                    sx = Console.ReadLine();
-
-                    /* InserirLinear(V, age, nm, sx); */
-                    // Implementar função de lista encadeada e aplicar colisão
+                    sexo = Console.ReadLine();
+                    InsereEncadeado(ColisaoEncadeada, idade, nome, sexo);
                 }
-            }
+                else if (op == 2)
+                {
+                    Console.Clear();
+                    Console.Write(">> Digite a idade: ");
+                    idade = int.Parse(Console.ReadLine());
+                    int chave = Busca(idade);
+                    
+                    if (ColisaoEncadeada[chave].idade == idade)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\n>> Nome encontrado <<\n");
+                        Console.ResetColor();
+                        Console.WriteLine($"Nome: {ColisaoEncadeada[chave].nome} || Sexo: {ColisaoEncadeada[chave].sexo}");
+                    }
+
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n>> Nome não encontrado <<");
+                        Console.ResetColor();
+                    }
+
+                }
+                else if (op == 3)
+                {
+                    Console.Clear();
+                    Console.Write(">> Digite a idade: ");
+                    idade = int.Parse(Console.ReadLine());
+                    int chave = Busca(idade);
+
+                    while (chave <= ColisaoEncadeada.Length)
+                    {
+                        for(int i = 0; i < ColisaoEncadeada.Length; i++)
+                        {
+                            if(ColisaoEncadeada[i].idade == idade)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Green;
+                                Console.WriteLine(">> Valor Encontrado <<");
+                                Console.ResetColor();
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("\n>> Valor não encontrado <<");
+                                Console.ResetColor();
+                            }
+                        }
+                    }
+                }
+                else if (op == 4)
+                {
+                    int c = 0;
+
+                    while (c <= ColisaoEncadeada.Length)
+                    {
+                        for (int chave = 0; chave < ColisaoEncadeada.Length; chave++)
+                        {
+                            Console.WriteLine($"Nome:{ColisaoEncadeada[chave].nome} " +
+                                " | " + $"Idade: {ColisaoEncadeada[chave].idade} " +
+                                " | " + $"Sexo: {ColisaoEncadeada[chave].sexo} ");
+                        }
+                        c++;
+                        Console.ReadKey();
+                    }
+
+                }
+                else if( op == 5)
+                    Console.Clear();
+            }   
         }
     }
 }
