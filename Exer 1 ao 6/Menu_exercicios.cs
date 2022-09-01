@@ -146,47 +146,46 @@ namespace menu_exer
 
                                 }
                             }
-                        }
-
-                        break;
+                        } 
+                    break;
                 }
             }
-            void Crescente(int nii, int nff)
+        }
+        void Crescente(int nii, int nff)
+        {
+            if (nii <= nff)
             {
-                if (nii <= nff)
+                Console.Write("|" + $"{nii}" + "|");
+                Crescente(nii + 1, nff);
+            }
+        }
+        void Descrescente(int nii, int nff)
+        {
+            if (nff >= nii)
+            {
+                Console.Write("|" + $"{nff}" + "|");
+                Descrescente(nii, nff - 1);
+            }
+        }
+        int Somatorio(int nii, int nff)
+        {
+            if (nii <= nff)
+            {
+                return Somatorio(nii + 1, nff) + nii;
+            }
+            else
+            {
+                return nii;
+            }
+        }
+        void Impares(int nii, int nff)
+        {
+            if (nii <= nff)
+            {
+                if (nii % 2 != 0)
                 {
                     Console.Write("|" + $"{nii}" + "|");
-                    Crescente(nii + 1, nff);
-                }
-            }
-            void Descrescente(int nii, int nff)
-            {
-                if (nff >= nii)
-                {
-                    Console.Write("|" + $"{nff}" + "|");
-                    Descrescente(nii, nff - 1);
-                }
-            }
-            int Somatorio(int nii, int nff)
-            {
-                if (nii <= nff)
-                {
-                    return Somatorio(nii + 1, nff) + nii;
-                }
-                else
-                {
-                    return nii;
-                }
-            }
-            void Impares(int nii, int nff)
-            {
-                if (nii <= nff)
-                {
-                    if (nii % 2 != 0)
-                    {
-                        Console.Write("|" + $"{nii}" + "|");
-                        Impares(nii + 1, nff);
-                    }
+                    Impares(nii + 1, nff);
                 }
             }
         }
@@ -275,7 +274,7 @@ namespace menu_exer
                 }
             */
         }
-        // ------------------------ Exer 5 ------------------------
+// ------------------------ Exer 5 ------------------------
         static void Exer_5()
         {
             int x, op;
@@ -335,7 +334,7 @@ namespace menu_exer
 
             return F;
         }
-        // ------------------------ Exer 6 ------------------------
+// ------------------------ Exer 6 ------------------------
         static void Exer_6()
         {
             int x;
