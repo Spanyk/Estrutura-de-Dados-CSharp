@@ -121,31 +121,22 @@ namespace menu_exer
                             vetor.Add(num);
                             index++;
 
-                            if (index == 5)
-                            {
-                                Console.WriteLine("\n[" + "Deseja continuar?" + "]\n");
-                                Continue = Console.ReadLine();
-                                Continue = Continue.ToUpper();
-                                index = 0;
-                                if (Continue == "N")
+                        if (index == 5)
+                        {
+                            Console.WriteLine("\n[" + "Deseja continuar?" + "]\n");
+                            Continue.ToUpper = Console.ReadLine();
+                            index = 0;
+                            string cc = Continue ? "N" : "\n=========================== | PROGRAMA ENCERRADO | ==========================="(
+                            cc => {
+                                int soma = 0;
+                                int[] vet_num = vetor.ToArray();
+                                for (int number = 0; number <= vet_num.Length; number++)
                                 {
-                                    int soma = 0;
-                                    int[] vet_num = vetor.ToArray();
-
-                                    for (int cc = 0; cc < vet_num.Length; cc++)
-                                    {
-                                        soma += vet_num[cc];
-                                    }
-
-                                    Console.WriteLine("Soma total dos números digitados: " + soma);
-
+                                    soma += vet_num[cc];
                                 }
-                                else
-                                {
-                                    Console.WriteLine("\n=========================== | PROGRAMA ENCERRADO | ===========================");
 
-                                }
-                            }
+                               return $"Soma total dos núemros: {soma}";
+                             });
                         } 
                     break;
                 }
